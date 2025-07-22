@@ -3,45 +3,30 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\Auth\RegisterResource;
+use App\Http\Requests\Auth\RegisterRequest;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
 
 class RegisterController extends Controller
 {
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-        // Validate the request data
-        $validator = Validator::make($request->all(),[
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Validation gagal',
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
+        $validated = $request->validated();
         // Create a new user instance
         $user = User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'password' => Hash::make($request->password),
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
         ]);
 
         $token = $user->createToken('Personal Access Token')->accessToken;
 
         // Optionally, you can return a response or token
-         return response()->json([
-            'status'  => true,
-            'message' => 'Registrasi berhasil',
-            'user'    => $user,
-            'token'   => $token,
-        ], 201);
+        return new RegisterResource([
+            'token' => $token,
+            'user'  => $user,
+        ]);
     }
 }
