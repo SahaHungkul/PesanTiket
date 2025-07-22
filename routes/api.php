@@ -13,6 +13,6 @@ Route::get('/user', function (Request $request) {
 //register
 Route::post('/register',[RegisterController::class, 'register']);
 //Login
-Route::post('/login', [LoginController::class, 'Login']);
+Route::post('/login', [LoginController::class, 'login']);
 //Logout
 Route::post('/logout', [LogoutController::class, 'logout'])->middleware('auth:api');
