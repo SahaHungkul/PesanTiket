@@ -3,47 +3,30 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Resources\Auth\LoginResource;
+use Illuminate\support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
 class LoginController extends Controller
 {
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'password' => 'required|string',
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Login Gagal',
-                'error' => $validator->errors(),
-            ], 422);
-        }
-        $user = User::where('email', $request->email)->first();
+        $validated = $request->validated();
+        $user = User::where('email', $validated['email'])->first();
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
+        if (! $user || ! Hash::check($validated['password'], $user->password)) {
             return response()->json([
-                'status' => false,
-                'message' => 'Email atau password salah',
+                'message' => 'Email atau password salah.'
             ], 401);
         }
-        if (!method_exists($user, 'createToken')) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Token tidak tersedia',
-            ], 500);
-        }
+
         $token = $user->createToken('Token Login')->accessToken;
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Login berhasil',
+        return new LoginResource([
             'token' => $token,
-            'user' => $user
-        ], 200);
+            'user' => $user,
+        ]);
     }
 }
