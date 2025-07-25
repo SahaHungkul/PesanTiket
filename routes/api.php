@@ -23,3 +23,4 @@ Route::apiResource('users', UserController::class);
 Route::get('/users/{id}', [UserController::class, 'show']);
 Route::delete('/users/{id}', [UserController::class, 'destroy']);
 
+
