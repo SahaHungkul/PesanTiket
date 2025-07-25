@@ -12,7 +12,7 @@ class RegisterResource extends JsonResource
      *
      * @return array<string, mixed>
      */
-    public function toArray(Request $request): array
+    public function toArray($request): array
     {
         return [
             'token' => $this['token'],
@@ -21,6 +21,7 @@ class RegisterResource extends JsonResource
                 'id' => $this['user']->id,
                 'name' => $this['user']->name,
                 'email' => $this['user']->email,
+                'roles' => $this['user']->getRoleNames()->first(), // Assuming roles are managed by Spatie
             ],
         ];
     }

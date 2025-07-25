@@ -23,7 +23,18 @@ class UserController extends Controller
         $data['password'] = Hash::make($data['password']);
 
         $user = User::create($data);
-        return new UserResource($user);
+
+        $roleName = $data['role'];
+        unset($data['role']);
+
+        $token = $user->createToken('Token Login')->accessToken;
+
+        $user->assignRole($roleName);
+
+        return response()->json([
+            'user'  => new UserResource($user),
+            'token' => $token,
+        ], 201);
     }
 
     public function show($id)
@@ -49,7 +60,7 @@ class UserController extends Controller
         }
 
         $data = $request->validated();
-        
+
         if (!empty($data['password'])) {
             $data['password'] = Hash::make($data['password']);
         } else {
