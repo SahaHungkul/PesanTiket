@@ -30,7 +30,7 @@ class RoleAndPermissionSeeder extends Seeder
         }
 
         // Roles
-        $superAdmin = Role::firstOrCreate(['name' => 'super-admin']);
+        $superAdmin = Role::firstOrCreate(['name' => 'superAdmin']);
         $admin = Role::firstOrCreate(['name' => 'admin']);
         $user = Role::firstOrCreate(['name' => 'user']);
 
