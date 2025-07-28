@@ -6,8 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\User\UserResource;
-use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -24,13 +25,14 @@ class UserController extends Controller
 
         $user = User::create($data);
 
-        $roleName = $data['role'];
-        unset($data['role']);
+        $user->assignRole('admin');
 
-        $tokenResult = $user->createToken('Token Login');
-        $token = $tokenResult->accessToken;
+        $role = Role::where('name', 'admin')->first();
+        $user->role_id = $role->id;
+        $user->save();
 
-        $user->assignRole($roleName);
+        $tokenResult = $user->createToken('Akses Token');
+        $token = $tokenResult->accessToken; // token
 
         return response()->json([
             'user'  => new UserResource($user),
