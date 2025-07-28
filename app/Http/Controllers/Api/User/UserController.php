@@ -27,7 +27,8 @@ class UserController extends Controller
         $roleName = $data['role'];
         unset($data['role']);
 
-        $token = $user->createToken('Token Login')->accessToken;
+        $tokenResult = $user->createToken('Token Login');
+        $token = $tokenResult->accessToken;
 
         $user->assignRole($roleName);
 

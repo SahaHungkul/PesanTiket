@@ -14,15 +14,16 @@ class RegisterResource extends JsonResource
      */
     public function toArray($request): array
     {
-        return [
-            'token' => $this['token'],
-            'type' => 'Bearer',
-            'user' => [
-                'id' => $this['user']->id,
-                'name' => $this['user']->name,
-                'email' => $this['user']->email,
-                'roles' => $this['user']->getRoleNames()->first(), // Assuming roles are managed by Spatie
-            ],
-        ];
+        return
+            [
+                'token' => $this['token'],
+                'type' => 'Bearer',
+                'user' => [
+                    'id' => $this['user']->id,
+                    'name' => $this['user']->name,
+                    'email' => $this['user']->email,
+                    'roles' => $this['user']->getRoleNames()->first(), // Assuming roles are managed by Spatie
+                ],
+            ];
     }
 }
