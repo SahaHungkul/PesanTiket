@@ -52,7 +52,7 @@ class UserController extends Controller
         return new UserResource($user);
     }
 
-    public function update(UpdateUserRequest $request, User $id)
+    public function update(UpdateUserRequest $request, $id)
     {
         $user = User::find($id);
 
@@ -71,6 +71,7 @@ class UserController extends Controller
         }
 
         $user->update($data);
+
         return new UserResource($user);
     }
 
