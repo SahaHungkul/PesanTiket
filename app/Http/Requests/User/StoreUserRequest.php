@@ -23,9 +23,9 @@ class StoreUserRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|unique:users,email',
-            'password' => 'required|string|min:6|confirmed',
-            'role' => 'required|exists:roles,name', // Assuming roles are managed by Spatie
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8|confirmed',
+// Assuming roles are managed by Spatie
         ];
     }
 }
