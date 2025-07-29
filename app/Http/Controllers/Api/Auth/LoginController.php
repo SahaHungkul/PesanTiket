@@ -8,25 +8,25 @@ use App\Http\Resources\Auth\LoginResource;
 use Illuminate\support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Services\LoginService;
 
 class LoginController extends Controller
 {
+    protected LoginService $loginService;
+
+    public function __construct(LoginService $loginService)
+    {
+        $this->loginService = $loginService;
+    }
+
     public function login(LoginRequest $request)
     {
-        $validated = $request->validated();
-        $user = User::where('email', $validated['email'])->first();
+        $result = $this->loginService->attemptLogin($request->validated());
 
-        if (! $user || ! Hash::check($validated['password'], $user->password)) {
-            return response()->json([
-                'message' => 'Email atau password salah.'
-            ], 401);
+        if (! $result) {
+            return response()->json(['message' => 'Email atau password salah.'], 401);
         }
 
-        $token = $user->createToken('Token Login')->accessToken;
-
-        return new LoginResource([
-            'token' => $token,
-            'user' => $user,
-        ]);
+        return new LoginResource($result);
     }
 }
