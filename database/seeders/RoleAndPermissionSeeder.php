@@ -16,7 +16,8 @@ class RoleAndPermissionSeeder extends Seeder
     public function run(): void
     {
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
-        // Permission Event
+
+        // Permissions
         $permissions = [
             'event.view',
             'event.create',
@@ -34,10 +35,9 @@ class RoleAndPermissionSeeder extends Seeder
         $admin = Role::firstOrCreate(['name' => 'admin']);
         $user = Role::firstOrCreate(['name' => 'user']);
 
-
-        //Super Admin Permission
+        // Assign permissions to roles
         $superAdmin->givePermissionTo(Permission::all());
-        //Admin Permission
+
         $admin->givePermissionTo([
             'event.view',
             'event.create',
@@ -45,7 +45,6 @@ class RoleAndPermissionSeeder extends Seeder
             'event.delete',
         ]);
 
-        //User Permission
         $user->givePermissionTo([
             'event.view',
         ]);
