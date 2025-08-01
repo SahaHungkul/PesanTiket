@@ -13,4 +13,9 @@ class Event extends Model
         'kuota',
         'deskripsi',
     ];
+    
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
 }
