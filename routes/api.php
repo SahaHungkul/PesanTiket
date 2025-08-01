@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\LogoutController;
 use App\Http\Controllers\Api\User\UserController;
 use App\Http\Controllers\Api\EventController;
+use App\Http\Controllers\Api\BookingController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -35,3 +36,6 @@ Route::middleware('auth:api')->group(function () {
     Route::put('/events/{id}', [EventController::class, 'update']);
     Route::delete('/events/{id}', [EventController::class, 'destroy']);
 });
+
+// Booking routes
+Route::middleware('auth:api')->post('/bookings',[BookingController::class,'store']);

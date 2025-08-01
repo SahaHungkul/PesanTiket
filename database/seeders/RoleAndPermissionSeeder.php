@@ -23,7 +23,10 @@ class RoleAndPermissionSeeder extends Seeder
             'event.create',
             'event.update',
             'event.delete',
-            'admin.create',
+            'booking.view',
+            'booking.create',
+            'booking.cancel',
+            'user.manage',
         ];
 
         foreach ($permissions as $permission){
@@ -43,10 +46,15 @@ class RoleAndPermissionSeeder extends Seeder
             'event.create',
             'event.update',
             'event.delete',
+            'booking.view',
+            'user.manage',
         ]);
 
         $user->givePermissionTo([
             'event.view',
+            'booking.create',
+            'booking.view',
+            'booking.cancel',
         ]);
     }
 }
