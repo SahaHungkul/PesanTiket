@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\LogoutController;
+use App\Http\Controllers\Api\Auth\ProfileController;
 use App\Http\Controllers\Api\User\UserController;
 use App\Http\Controllers\Api\EventController;
 use App\Http\Controllers\Api\BookingController;
@@ -13,12 +14,14 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:api');
 
-//register
+//Authenticate
 Route::post('/register', [RegisterController::class, 'register']);
-//Login
 Route::post('/login', [LoginController::class, 'login']);
-//Logout
-Route::post ('/logout', [LogoutController::class, 'logout'])->middleware('auth:api');
+
+Route::middleware('auth:api')->group(function () {
+    Route::post('/logout', [LogoutController::class, 'logout']);
+    Route::get('/profile', [ProfileController::class, 'profile']);
+});
 
 // User routes
 Route::middleware('auth:api')->group(function () {
@@ -38,4 +41,4 @@ Route::middleware('auth:api')->group(function () {
 });
 
 // Booking routes
-Route::middleware('auth:api')->post('/bookings',[BookingController::class,'store']);
+Route::middleware('auth:api')->post('/bookings', [BookingController::class, 'store']);
