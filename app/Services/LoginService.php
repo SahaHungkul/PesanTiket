@@ -9,6 +9,7 @@ class LoginService
 {
     public function attemptLogin(array $credentials): array|null
     {
+        
         $user = User::where('email', $credentials['email'])->first();
 
         if (! $user || ! Hash::check($credentials['password'], $user->password)) {
