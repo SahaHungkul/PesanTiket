@@ -16,18 +16,14 @@ class RegisterResource extends JsonResource
     {
         return
             [
-                'message' => 'User registered successfully',
-                'data' =>
+                'user' =>
                 [
-                    'user' =>
-                    [
-                        'id' => $this['user']->id,
-                        'name' => $this['user']->name,
-                        'email' => $this['user']->email,
-                        // 'roles' => $this['user']->getRoleNames()->first(), // Assuming roles are managed by Spatie
-                    ],
-                    'token' => $this['token'],
+                    'id' => $this['user']->id,
+                    'name' => $this['user']->name,
+                    'email' => $this['user']->email,
+                    // 'roles' => $this['user']->getRoleNames()->first(), // Assuming roles are managed by Spatie
                 ],
+                'token' => $this['token'],
             ];
     }
 }

@@ -27,6 +27,9 @@ class LoginController extends Controller
             return response()->json(['message' => 'Email atau password salah.'], 401);
         }
 
-        return new LoginResource($result);
+        return response()->json([
+            'message' => 'Login successful',
+            'data' => new LoginResource($result),
+        ],200);
     }
 }

@@ -23,6 +23,9 @@ class RegisterController extends Controller
         $result = $this->registerService->register($validated);
 
         // Optionally, you can return a response or token
-        return new RegisterResource($result);
+        return response()->json([
+            'message' => 'User registered successfully',
+            'data' => new RegisterResource($result),
+        ]);
     }
 }

@@ -27,12 +27,12 @@ class BookingController extends Controller
             );
 
             return response()->json([
-                'message' => 'Booking berhasil.',
+                'message' => 'Booking successfully.',
                 'booking' => $booking
             ]);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Gagal booking.',
+                'message' => 'Booking failed.',
                 'error' => $e->getMessage()
             ], $e->getMessage() === 'Kuota tidak mencukupi.' ? 422 : 500);
         }
