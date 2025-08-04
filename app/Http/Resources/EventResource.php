@@ -16,11 +16,11 @@ class EventResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'judul' => $this->judul,
-            'tanggal' => $this->tanggal,
-            'lokasi' => $this->lokasi,
-            'kuota' => $this->kuota,
-            'deskripsi' => $this->deskripsi,
+            'title' => $this->judul,
+            'date' => $this->tanggal,
+            'location' => $this->lokasi,
+            'quota' => $this->kuota,
+            'description' => $this->deskripsi,
         ];
     }
 }
