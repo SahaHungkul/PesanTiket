@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BookingRequest;
 use App\Services\BookingService;
+use App\Http\Resources\BookingResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
@@ -28,7 +29,7 @@ class BookingController extends Controller
 
             return response()->json([
                 'message' => 'Booking successfully.',
-                'booking' => $booking
+                'data' => new BookingResource($booking)
             ]);
         } catch (\Exception $e) {
             return response()->json([
