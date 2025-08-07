@@ -11,7 +11,7 @@ class LogoutController extends Controller
     public function logout(Request $request)
     {
 
-        $request->user()->tokens()->revoke();
+        $request->user()->tokens()->delete();
 
         return response()->json([
             'status' => true,
