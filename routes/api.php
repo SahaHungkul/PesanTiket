@@ -10,35 +10,28 @@ use App\Http\Controllers\Api\User\UserController;
 use App\Http\Controllers\Api\EventController;
 use App\Http\Controllers\Api\BookingController;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:api');
-
-//Authenticate
-Route::post('/register', [RegisterController::class, 'register']);
-Route::post('/login', [LoginController::class, 'login']);
+Route::post('/register', [RegisterController::class, 'register'])->name('Register');
+Route::post('/login', [LoginController::class, 'login'])->name('Login');
 
 Route::middleware('auth:api')->group(function () {
-    Route::post('/logout', [LogoutController::class, 'logout']);
-    Route::get('/profile', [ProfileController::class, 'profile']);
-});
 
-// User routes
-Route::middleware('auth:api')->group(function () {
-    Route::get('/users', [UserController::class, 'index']);
-    Route::post('/users', [UserController::class, 'store']);
-    Route::get('/users/{id}', [UserController::class, 'show']);
-    Route::put('/users/{id}', [UserController::class, 'update']);
-    Route::delete('/users/{id}', [UserController::class, 'destroy']);
-});
-// Event routes
-Route::middleware('auth:api')->group(function () {
-    Route::get('/events', [EventController::class, 'index']);
-    Route::post('/events', [EventController::class, 'store']);
-    Route::get('/events/{id}', [EventController::class, 'show']);
-    Route::put('/events/{id}', [EventController::class, 'update']);
-    Route::delete('/events/{id}', [EventController::class, 'destroy']);
-});
+    // Authenticated User Routes
+    Route::get('/profile', [ProfileController::class, 'profile'])->name('Me');
+    Route::post('/logout', [LogoutController::class, 'logout'])->name('Logout');
 
-// Booking routes
-Route::middleware('auth:api')->post('/bookings', [BookingController::class, 'store']);
+    // Route::get('/user', fn(Request $request) => $request->user());
+
+    Route::middleware('role:superAdmin')->group(function () {
+        Route::resource('/users', UserController::class);
+        Route::resource('/events', EventController::class)->only(['store', 'update', 'destroy']);
+    });
+
+    Route::middleware('role:admin|superAdmin|user')->group(function () {
+        Route::get('/events', [EventController::class, 'index']);
+        Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
+    });
+
+    Route::middleware('role:user|admin|superAdmin')->group(function () {
+        Route::resource('/bookings', BookingController::class)->only(['store', 'index', 'show', 'destroy']);
+    });
+});
