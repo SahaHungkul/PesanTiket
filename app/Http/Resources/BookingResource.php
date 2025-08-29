@@ -22,8 +22,10 @@ class BookingResource extends JsonResource
                 'title' => $this->event->judul,
                 'date' => $this->event->tanggal,
             ],
-            'quantity' => $this->kuota,
-            'status' => $this->status,
+            'quantity' => $this->jumlah,
+            'total_price' => $this->total_price,
+            'booking_code' => $this->kode_booking,
+            'status' => 'confirmed',
         ];
     }
 }

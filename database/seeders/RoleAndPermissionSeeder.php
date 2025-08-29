@@ -30,13 +30,16 @@ class RoleAndPermissionSeeder extends Seeder
         ];
 
         foreach ($permissions as $permission){
-            Permission::firstOrCreate(['name' => $permission]);
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'guard_name' => 'api',
+            ]);
         }
 
         // Roles
-        $superAdmin = Role::firstOrCreate(['name' => 'superAdmin']);
-        $admin = Role::firstOrCreate(['name' => 'admin']);
-        $user = Role::firstOrCreate(['name' => 'user']);
+        $superAdmin = Role::firstOrCreate(['name' => 'superAdmin', 'guard_name' => 'api']);
+        $admin = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'api']);
+        $user = Role::firstOrCreate(['name' => 'user', 'guard_name' => 'api']);
 
         // Assign permissions to roles
         $superAdmin->givePermissionTo(Permission::all());

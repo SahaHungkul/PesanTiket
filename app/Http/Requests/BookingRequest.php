@@ -24,7 +24,7 @@ class BookingRequest extends FormRequest
         return [
             'event_id' => 'required|exists:events,id',
             'jumlah' => 'required|integer|min:1',
-            // 'kode_booking' => 'required|string|max:255|unique:bookings,kode_booking',
+            // 'total_price' => 'sometimes|numeric|min:1',
         ];
     }
 }

@@ -23,7 +23,7 @@ class RegisterResource extends JsonResource
                     'email' => $this['user']->email,
                     // 'roles' => $this['user']->getRoleNames()->first(), // Assuming roles are managed by Spatie
                 ],
-                'token' => $this['token'],
+                // 'token' => $this['token'],
             ];
     }
 }
