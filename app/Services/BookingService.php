@@ -49,8 +49,8 @@ class BookingService
                 'status' => 'confirmed',
             ]);
 
-            Mail::to($user->email)->send(new UserBookingNotifmail($booking));
-            Mail::to('superadmin@example.com')->send(new AdminBookingNotificationMail($booking));
+            // Mail::to($user->email)->send(new UserBookingNotifmail($booking));
+            // Mail::to('superadmin@example.com')->send(new AdminBookingNotificationMail($booking));
 
             return $booking;
         });

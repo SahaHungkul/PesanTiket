@@ -24,16 +24,19 @@ class BookingController extends Controller
     public function store(BookingRequest $request): JsonResponse
     {
         try {
+            DB::beginTransaction();
             $booking = $this->bookingService->store(
                 $request->validated(),
                 $user = Auth::user()
             );
 
+            DB::commit();
             return response()->json([
                 'message' => 'Booking successfully.',
                 'data' => new BookingResource($booking)
             ]);
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json([
                 'message' => 'Booking failed.',
                 'error' => $e->getMessage()

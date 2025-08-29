@@ -14,7 +14,7 @@ class UserBookingNotifmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $booking;
+    public $booking;
     /**
      * Create a new message instance.
      */
