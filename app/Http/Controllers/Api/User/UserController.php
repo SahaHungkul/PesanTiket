@@ -8,36 +8,53 @@ use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\User\UserResource;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
+use Illuminate\Http\Request;
 use App\Models\User;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::latest()->paginate(10);
-        return UserResource::collection($users);
+        try {
+            return response()->json([
+                'message' => 'Users retrieved successfully',
+                'data' => UserResource::collection(User::paginate(10)),
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'An error occurred while retrieving users: ' . $e->getMessage()], 500);
+        }
     }
 
     public function store(StoreUserRequest $request)
     {
-        $data = $request->validated();
-        $data['password'] = Hash::make($data['password']);
+        try {
+            $data = $request->validated();
+            $data['password'] = Hash::make($data['password']);
 
-        $user = User::create($data);
+            $user = User::create($data);
 
-        $user->assignRole('admin');
+            $roleName = $data['role'];
 
-        $role = Role::where('name', 'admin')->first();
-        $user->role_id = $role->id;
-        $user->save();
+            $role = Role::where('name', $roleName)->firstOrFail();
 
-        $tokenResult = $user->createToken('Akses Token');
-        $token = $tokenResult->accessToken; // token
+            $user->assignRole($roleName);
+            $user->role_id = $role->id;
+            $user->save();
 
-        return response()->json([
-            'user'  => new UserResource($user),
-            'token' => $token,
-        ], 201);
+
+            // $tokenResult = $user->createToken('Akses Token');
+            // $token = $tokenResult->accessToken; // token
+
+            return response()->json([
+                'user'  => new UserResource($user),
+                // 'token' => $token,
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+            'message' => 'Terjadi kesalahan saat membuat user.',
+            'error'   => $e->getMessage(), // bisa dihapus di production
+        ], 500);
+        }
     }
 
     public function show($id)

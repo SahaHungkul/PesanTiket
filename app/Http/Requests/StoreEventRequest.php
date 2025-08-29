@@ -26,6 +26,7 @@ class StoreEventRequest extends FormRequest
             'tanggal' => 'required|date',
             'lokasi' => 'required|string|max:255',
             'kuota' => 'required|integer|min:1',
+            'ticket_price' => 'required|numeric|min:1',
             'deskripsi' => 'nullable|string',
         ];
     }

@@ -3,27 +3,30 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-// use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Booking;
 
-class BookingConfirmationMail extends Mailable
+class UserBookingNotifmail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    protected $booking;
     /**
      * Create a new message instance.
      */
-    public function __construct(public Booking $booking){}
+    public function __construct(Booking $booking)
+    {
+        $this->booking = $booking;
+    }
 
     public function build()
     {
-        return $this->subject('konfirmasi booking')
-            ->view('emails.booking')
-            ->with(['booking' => $this->booking]);
+        return $this->subject('User Booking Notif: #' . $this->booking->kode_booking)
+                    ->view('emails.user_booking_notif');
     }
 
     /**
@@ -32,7 +35,7 @@ class BookingConfirmationMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Booking Confirmation Mail',
+            subject: 'User Booking Notifmail',
         );
     }
 
@@ -42,7 +45,7 @@ class BookingConfirmationMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.user_booking_notif',
         );
     }
 

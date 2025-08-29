@@ -18,6 +18,7 @@ class SuperAdminSeeder extends Seeder
             [
                 'name' => 'Super Admin',
                 'password' => hash::make('password'),
+                'role_id' => 1, // Assuming role_id 1 is for superAdmin
             ]
         );
 

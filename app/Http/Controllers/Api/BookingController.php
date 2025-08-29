@@ -27,7 +27,6 @@ class BookingController extends Controller
             $booking = $this->bookingService->store(
                 $request->validated(),
                 $user = Auth::user()
-
             );
 
             return response()->json([

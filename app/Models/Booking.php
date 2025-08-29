@@ -11,6 +11,8 @@ class Booking extends Model
         'event_id',
         'jumlah',
         'kode_booking',
+        'status',
+        'total_price',
     ];
 
     public function event()

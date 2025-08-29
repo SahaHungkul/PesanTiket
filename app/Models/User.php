@@ -18,6 +18,7 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasRoles, HasApiTokens, HasFactory, Notifiable;
 
+    protected $guard_name = 'api';
     /**
      * The attributes that are mass assignable.
      *
@@ -27,7 +28,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role_id',
     ];
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -51,7 +54,7 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    
+
     public function bookings()
     {
         return $this->hasMany(Booking::class);
