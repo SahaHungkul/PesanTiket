@@ -52,6 +52,7 @@ class BookingService
             // Mail::to($user->email)->send(new UserBookingNotifmail($booking));
             // Mail::to('superadmin@example.com')->send(new AdminBookingNotificationMail($booking));
 
+            //Matikan saja comment nya jika ingin uji coba
             return $booking;
         });
     }
